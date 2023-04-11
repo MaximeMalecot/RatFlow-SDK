@@ -2,10 +2,9 @@ import { DomTypes, EventTypes, useAnalytics } from "@/contexts/analytics-context
 import { useEffect, useRef } from "react";
 import { UseTrackerProps } from "@/interfaces/tracker-hook";
 
-type DomEvents = Omit<UseTrackerProps, "page-changed">
 interface UseGenericTrackerProps extends UseTrackerProps {
     type: any;
-    cb?: (e: any) => void
+    cb?: (data: any) => void
 }
 
 const typeMapping = {
@@ -24,10 +23,12 @@ export default function useGenericTracker({ tag, type, cb }: UseGenericTrackerPr
 
     useEffect(() => {
         if (!ref.current) return;
-        const listener = () => {
+        const listener = (d: any) => {
+            const data = cb ? cb(d) : d;
             fetchEvent({
                 type,
                 tag,
+                data
             });
         };
         ref.current.addEventListener(mappedType, listener);

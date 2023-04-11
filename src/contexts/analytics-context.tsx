@@ -20,6 +20,7 @@ export type EventTypes = DomTypes | "page-changed"
 export interface EventType {
     tag?: string;
     type: EventTypes;
+    data?: any
 }
 
 interface AnalyticsContextType {
@@ -29,7 +30,7 @@ interface AnalyticsContextType {
 
 const AnalyticsContext = createContext<AnalyticsContextType>({
     fetchEvent: () => Promise.resolve(),
-    setCurrentPage: {},
+    setCurrentPage: () => {},
 });
 
 export const useAnalytics = () => {
