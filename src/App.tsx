@@ -1,5 +1,5 @@
 import '@/App.css';
-import useScrollTracker from './hooks/use-scroll';
+import useScrollTracker from './hooks/trackers/use-scroll';
 
 function App() {
   const { ref } = useScrollTracker({ tag: "div"});

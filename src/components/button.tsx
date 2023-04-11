@@ -1,5 +1,4 @@
-import useClickTracker from "@/hooks/use-click-tracker";
-import useDoubleClick from "@/hooks/use-double-click";
+import useDoubleClick from "@/hooks/trackers/use-double-click";
 
 export default function Button(){
     const { ref } = useDoubleClick({ tag: "button"});
