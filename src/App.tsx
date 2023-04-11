@@ -1,5 +1,5 @@
 import "@/App.css";
-import useScrollTracker from "./hooks/trackers/use-scroll";
+import useScrollTracker from "./hooks/trackers/use-scroll-tracker";
 import {
     Link,
     Outlet,

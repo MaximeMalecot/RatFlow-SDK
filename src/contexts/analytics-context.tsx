@@ -1,32 +1,9 @@
+import {
+    AnalyticsContextProviderProps,
+    AnalyticsContextType,
+    FetchEventParams,
+} from "@/interfaces/analytics-context";
 import React, { createContext, useContext, useEffect } from "react";
-
-interface Props {
-    children: React.ReactNode;
-    config: {
-        token: string;
-    };
-}
-
-export type DomTypes = 
-| "click"
-| "submit"
-| "double-click"
-| "mouse-over"
-| "scroll"
-| "changed"
-
-export type EventTypes = DomTypes | "page-changed"
-
-export interface EventType {
-    tag?: string;
-    type: EventTypes;
-    data?: any
-}
-
-interface AnalyticsContextType {
-    fetchEvent: (event: EventType) => Promise<void>;
-    setCurrentPage: any;
-}
 
 const AnalyticsContext = createContext<AnalyticsContextType>({
     fetchEvent: () => Promise.resolve(),
@@ -45,17 +22,16 @@ export const useAnalytics = () => {
     return context;
 };
 
-export const AnalyticsContextProvider: React.FC<Props> = ({
-    children,
-    config,
-}: Props) => {
+export const AnalyticsContextProvider: React.FC<
+    AnalyticsContextProviderProps
+> = ({ children, config }: AnalyticsContextProviderProps) => {
     const { token } = config;
     const [currentPage, setCurrentPage] = React.useState<string | null>(null);
 
-    const fetchEvent = async (event: EventType) => {
+    const fetchEvent = async (event: FetchEventParams) => {
         const { tag, type } = event;
         const page = currentPage ? currentPage : window.location.pathname;
-        
+
         const res = await fetch(`http://localhost:3000/api/analytics/`, {
             method: "POST",
             headers: {
@@ -64,13 +40,13 @@ export const AnalyticsContextProvider: React.FC<Props> = ({
             body: JSON.stringify({
                 type,
                 tag,
-                page
+                page,
             }),
         });
     };
 
     useEffect(() => {
-        if(!currentPage) return;
+        if (!currentPage) return;
         fetchEvent({ type: "page-changed" });
     }, [currentPage]);
 

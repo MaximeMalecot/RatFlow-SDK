@@ -1,25 +1,23 @@
-import { DomTypes, EventTypes, useAnalytics } from "@/contexts/analytics-context";
+import {
+    useAnalytics,
+} from "@/contexts/analytics-context";
 import { useEffect, useRef } from "react";
-import { UseTrackerProps } from "@/interfaces/tracker-hook";
+import { TypeMappingInterface, UseGenericTrackerProps, UseTrackerProps } from "@/interfaces/tracker";
 
-interface UseGenericTrackerProps extends UseTrackerProps {
-    type: any;
-    cb?: (data: any) => void
-}
-
-const typeMapping = {
-    click: "click",
+const typeMapping: TypeMappingInterface = {
     "double-click": "dblclick",
-    submit: "submit",
     "mouse-over": "mouseover",
-    "scroll": "scroll",
-    "changed": "change",
-}
+    changed: "change",
+};
 
-export default function useGenericTracker({ tag, type, cb }: UseGenericTrackerProps) {
+export default function useGenericTracker({
+    tag,
+    type: rawType,
+    cb,
+}: UseGenericTrackerProps) {
     const ref = useRef<any>(null); //Any à changer
     const { fetchEvent } = useAnalytics();
-    const mappedType = type;
+    const type = rawType in typeMapping ? typeMapping[rawType] : rawType;
 
     useEffect(() => {
         if (!ref.current) return;
@@ -28,12 +26,12 @@ export default function useGenericTracker({ tag, type, cb }: UseGenericTrackerPr
             fetchEvent({
                 type,
                 tag,
-                data
+                data,
             });
         };
-        ref.current.addEventListener(mappedType, listener);
+        ref.current.addEventListener(type, listener);
         return () => {
-            ref.current?.removeEventListener(mappedType, listener);
+            ref.current?.removeEventListener(type, listener);
         };
     }, []);
 
