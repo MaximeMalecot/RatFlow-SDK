@@ -1,9 +1,11 @@
-import { EventTypes, useAnalytics } from "@/contexts/analytics-context";
+import { DomTypes, EventTypes, useAnalytics } from "@/contexts/analytics-context";
 import { useEffect, useRef } from "react";
 import { UseTrackerProps } from "@/interfaces/tracker-hook";
 
+type DomEvents = Omit<UseTrackerProps, "page-changed">
 interface UseGenericTrackerProps extends Partial<UseTrackerProps> {
-    type: EventTypes;
+    type: DomTypes;
+    cb?: (e: any) => void
 }
 
 const typeMapping = {
@@ -11,10 +13,10 @@ const typeMapping = {
     "double-click": "dblclick",
     submit: "submit",
     "mouse-over": "mouseover",
-    "scroll": "scroll"
+    "scroll": "scroll",
 }
 
-export default function useGenericTracker({ tag, type }: UseGenericTrackerProps) {
+export default function useGenericTracker({ tag, type, cb }: UseGenericTrackerProps) {
     const ref = useRef<any>(null); //Any à changer
     const { fetchEvent } = useAnalytics();
     const mappedType = typeMapping[type];

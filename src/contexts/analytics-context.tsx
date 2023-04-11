@@ -7,12 +7,14 @@ interface Props {
     };
 }
 
-export type EventTypes =
-    | "click"
-    | "submit"
-    | "double-click"
-    | "mouse-over"
-    | "scroll";
+export type DomTypes = 
+| "click"
+| "submit"
+| "double-click"
+| "mouse-over"
+| "scroll"
+
+export type EventTypes = DomTypes | "page-changed"
 
 export interface EventType {
     tag?: string;
@@ -21,10 +23,12 @@ export interface EventType {
 
 interface AnalyticsContextType {
     fetchEvent: (event: EventType) => Promise<void>;
+    setCurrentPage: any;
 }
 
 const AnalyticsContext = createContext<AnalyticsContextType>({
     fetchEvent: () => Promise.resolve(),
+    setCurrentPage: {},
 });
 
 export const useAnalytics = () => {
@@ -44,6 +48,7 @@ export const AnalyticsContextProvider: React.FC<Props> = ({
     config,
 }: Props) => {
     const { token } = config;
+    const [currentPage, setCurrentPage] = React.useState<string>("");
 
     const fetchEvent = async (event: EventType) => {
         const { tag, type } = event;
@@ -58,8 +63,13 @@ export const AnalyticsContextProvider: React.FC<Props> = ({
         });
     };
 
+    useEffect(() => {
+        if(currentPage === "") return;
+        fetchEvent({ type: "page-changed" });
+    }, [currentPage]);
+
     return (
-        <AnalyticsContext.Provider value={{ fetchEvent }}>
+        <AnalyticsContext.Provider value={{ fetchEvent, setCurrentPage }}>
             {children}
         </AnalyticsContext.Provider>
     );
