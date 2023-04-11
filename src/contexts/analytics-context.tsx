@@ -13,6 +13,7 @@ export type DomTypes =
 | "double-click"
 | "mouse-over"
 | "scroll"
+| "changed"
 
 export type EventTypes = DomTypes | "page-changed"
 

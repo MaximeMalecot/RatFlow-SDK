@@ -3,8 +3,8 @@ import { useEffect, useRef } from "react";
 import { UseTrackerProps } from "@/interfaces/tracker-hook";
 
 type DomEvents = Omit<UseTrackerProps, "page-changed">
-interface UseGenericTrackerProps extends Partial<UseTrackerProps> {
-    type: DomTypes;
+interface UseGenericTrackerProps extends UseTrackerProps {
+    type: any;
     cb?: (e: any) => void
 }
 
@@ -14,12 +14,13 @@ const typeMapping = {
     submit: "submit",
     "mouse-over": "mouseover",
     "scroll": "scroll",
+    "changed": "change",
 }
 
 export default function useGenericTracker({ tag, type, cb }: UseGenericTrackerProps) {
     const ref = useRef<any>(null); //Any à changer
     const { fetchEvent } = useAnalytics();
-    const mappedType = typeMapping[type];
+    const mappedType = type;
 
     useEffect(() => {
         if (!ref.current) return;
