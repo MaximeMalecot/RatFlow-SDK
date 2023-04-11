@@ -48,23 +48,27 @@ export const AnalyticsContextProvider: React.FC<Props> = ({
     config,
 }: Props) => {
     const { token } = config;
-    const [currentPage, setCurrentPage] = React.useState<string>("");
+    const [currentPage, setCurrentPage] = React.useState<string | null>(null);
 
     const fetchEvent = async (event: EventType) => {
         const { tag, type } = event;
-        const res = await fetch(`http://localhost:3000/api/analytics/${type}`, {
+        const page = currentPage ? currentPage : window.location.pathname;
+        
+        const res = await fetch(`http://localhost:3000/api/analytics/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
+                type,
                 tag,
+                page
             }),
         });
     };
 
     useEffect(() => {
-        if(currentPage === "") return;
+        if(!currentPage) return;
         fetchEvent({ type: "page-changed" });
     }, [currentPage]);
 

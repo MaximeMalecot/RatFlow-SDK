@@ -1,4 +1,4 @@
-import useSubmitTracker from "@/hooks/use-submit-tracker";
+import useSubmitTracker from "@/hooks/trackers/use-submit-tracker";
 
 export default function Form() {
     const { ref } = useSubmitTracker({ tag: "form" });
