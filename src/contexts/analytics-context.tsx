@@ -29,7 +29,7 @@ export const AnalyticsContextProvider: React.FC<
     const [currentPage, setCurrentPage] = React.useState<string | null>(null);
 
     const fetchEvent = async (event: FetchEventParams) => {
-        const { tag, type } = event;
+        const { tag, type, data } = event;
         const page = currentPage ? currentPage : window.location.pathname;
 
         const res = await fetch(`http://localhost:3000/api/analytics/`, {
@@ -41,6 +41,7 @@ export const AnalyticsContextProvider: React.FC<
                 type,
                 tag,
                 page,
+                data,
             }),
         });
     };

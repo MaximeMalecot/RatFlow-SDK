@@ -30,7 +30,7 @@ function App() {
     const { setCurrentPage } = useAnalytics();
 
     useEffect(() => {
-      setCurrentPage(pathname);
+        setCurrentPage(pathname);
     }, [pathname]);
 
     return (
