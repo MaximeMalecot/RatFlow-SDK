@@ -1,8 +1,8 @@
 import {
     useAnalytics,
-} from "@/contexts/analytics-context";
+} from "../context";
 import { useEffect, useRef } from "react";
-import { TypeMappingInterface, UseGenericTrackerProps, UseTrackerProps } from "@/interfaces/tracker";
+import { TypeMappingInterface, UseGenericTrackerProps, UseTrackerProps } from "../interfaces/tracker";
 
 const typeMapping: TypeMappingInterface = {
     "double-click": "dblclick",

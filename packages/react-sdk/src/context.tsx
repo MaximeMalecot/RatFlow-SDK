@@ -2,7 +2,7 @@ import {
     AnalyticsContextProviderProps,
     AnalyticsContextType,
     FetchEventParams,
-} from "@/interfaces/analytics-context";
+} from "./interfaces/analytics-context";
 import React, { createContext, useContext, useEffect } from "react";
 
 const AnalyticsContext = createContext<AnalyticsContextType>({

@@ -1,4 +1,4 @@
-import { UseTrackerProps } from "@/interfaces/tracker";
+import { UseTrackerProps } from "../interfaces/tracker";
 import useGenericTracker from "./use-generic-tracker";
 
 export default function useClickTracker({ tag }: UseTrackerProps) {
