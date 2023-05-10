@@ -1,4 +1,5 @@
 import { API_ENDPOINT } from "./constants";
+const fetch = require('node-fetch');
 
 interface SendEventOptions {
     useBeacon?: boolean;
@@ -24,37 +25,45 @@ interface SendEventAuth {
 interface SendEventParams {
     auth: SendEventAuth;
     data: SendEventData;
-    options: SendEventOptions;
+    options?: SendEventOptions;
 }
 
-export const sendEvent = async ({ auth, data, options }: SendEventParams) => {
-    if(!auth.appId) {
+export const sendEvent = async ({
+    auth,
+    data,
+    options = {},
+}: SendEventParams) => {
+    if (!auth.appId) {
         throw new Error("appId is required");
     }
     const { appId, appSecret, service } = auth;
     const { eventName, url, date, tag, clientId, sessionId, customData } = data;
     const { useBeacon } = options;
 
-    if( !appId || !appSecret || !service) {
+    if (!appId || !appSecret || !service) {
         throw new Error("Missing SendEventAuth params");
     }
 
-    if(!eventName || !url || !date) {
+    if (!eventName || !url || !date) {
         throw new Error("Missing SendEventData params");
     }
 
-
-    if(useBeacon && navigator) {
-        //TODO: implement beacon
-        console.log("beacon");
-    }else{
-        await fetch(`${API_ENDPOINT}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ ...event }),
-        });
+    try{
+        if (useBeacon && window && window.navigator) {
+            //TODO: implement beacon
+            console.log("beacon");
+        } else {
+            console.log(API_ENDPOINT)
+            await fetch(`${API_ENDPOINT}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ yourData: "here" }),
+            });
+        }
+    }catch(e){
+        console.log(e)
     }
     
 };

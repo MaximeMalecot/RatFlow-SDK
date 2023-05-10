@@ -11,7 +11,8 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-router-dom": "^6.10.0",
-    "vite-plugin-dts": "^2.3.0"
+    "vite-plugin-dts": "^2.3.0",
+    "ratflow-sdk-lib": "*"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",

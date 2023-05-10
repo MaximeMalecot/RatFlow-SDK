@@ -4,6 +4,7 @@ import {
     FetchEventParams,
 } from "./interfaces/analytics-context";
 import React, { createContext, useContext, useEffect } from "react";
+import { sendEvent } from "ratflow-sdk-lib";
 
 const AnalyticsContext = createContext<AnalyticsContextType>({
     fetchEvent: () => Promise.resolve(),
@@ -32,18 +33,21 @@ export const AnalyticsContextProvider: React.FC<
         const { tag, type, data } = event;
         const page = currentPage ? currentPage : window.location.pathname;
 
-        const res = await fetch(`http://localhost:3000/api/analytics/`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                type,
-                tag,
-                page,
-                data,
-            }),
-        });
+        const authOptions = {
+            appId: token
+        }
+
+        const dataOptions = {
+            tag: tag??"no",
+            eventName: type,
+            url: page,
+            date: new Date()
+        }
+
+        const options = { 
+            useBeacon: true,
+        }
+        const res = await sendEvent({auth: authOptions, data: dataOptions, options});
     };
 
     useEffect(() => {

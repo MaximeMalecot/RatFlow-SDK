@@ -13,9 +13,9 @@ export default defineConfig({
     build: {
         lib: {
             entry: path.resolve(__dirname, 'index.ts'),
-            name: 'ratflow-sdk',
+            name: 'ratflow-sdk-react',
             formats: ['es', 'umd'],
-            fileName: (format) => `ratflow-sdk.${format}.js`,
+            fileName: (format) => `ratflow-sdk-react.${format}.js`,
         },
         rollupOptions: {
             external: ['react', 'react-dom'],
