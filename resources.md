@@ -31,12 +31,11 @@ Fonctionnalités :
         /node
     Tous le monde va utiliser lib 
 
-## Attendus : 
+## Attendus Front : 
 
 init : init(configOptions)
     configOptions : {
         app_id: string required,
-        app_secret: string required,
         service?: string, (default: null, ex: "frontend")n
         beacon?: boolean (default: true),
         serviceWorker?: boolean (default: true),
@@ -51,12 +50,84 @@ init va :
 
 eventData: {
     appId: string required,
-    appSecret: string required,
+    appSecret?: string required,
+    service?: string, (default: null, ex: "frontend")
+
+
+    
     tag?: string,
     clientId: string required,
     sessionId: string required,
     event: string required,
     url: string required,
+    userAgent: string required,
     customData?: object,
     date: Date required,
 }
+
+
+## Attendus Back :
+
+SDK back :
+    Collecter les données par les requêtes 
+    middleware de récupération de données sur les requetes
+    fonctions d'envoie de données
+
+
+SDK BACK CORRECTION :
+    données back : IP, adresse MAC, userAgent, Referer
+    Envoie de custom-event
+    L'utilisateur fournit le sessionId et clientId 
+    Middleware de collecte de données et d'envoi
+
+    app.use(tracker({
+        appId:
+        appSecret:
+        service:
+    }))
+
+
+    function tracker({appId,appSecret,service="null"}){
+        const secretData = {
+            appId,
+            appSecret
+        };
+
+        return function trackerMiddleware(req,res,next){
+            const userData = {
+                ip: req.ip,
+                url: req.url,
+                method: req.method,
+                userAgent: req.headers["user-agent"],
+                <!-- ID Visitor,
+                ID Session -->
+            }
+
+            req.sendTrackerEvent = function(...event){
+                sendEvent({
+                    ...event,
+                    ...userData,
+                });
+            }
+
+            next();
+        }
+    }
+
+    sendEvent = (data, secretData) => {
+        const url = zaokezakoezae;
+        fetch(url, {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: 'Basic '+ Buffer.from(`${secretData.appId}:${secretData.appSecret}`).toString("base64")
+            }
+        })
+    }
+
+    collecte des UserAgents : UAParse.js
+    Logging : Winston, Morgan
+
+    SendEvent doit être envoyé après que la réponse du serveur client ait été envoyée (cf : https://github.com/expressjs/morgan/blob/master/index.js ligne 100)
+    Ou alors utilisé les "WorkerThread"
