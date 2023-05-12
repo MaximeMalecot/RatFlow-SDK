@@ -1,1 +1,1 @@
-export { sendEvent } from "./send-event";
+export { sendEvent } from "./send-event"
