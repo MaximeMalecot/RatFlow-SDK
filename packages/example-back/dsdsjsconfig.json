@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "ratflow-sdk-lib/back": [
+                "./node_modules/ratflow-sdk-lib/back/dist/index.js"
+            ]
+        }
+    }
+}
