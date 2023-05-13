@@ -14,9 +14,9 @@ export default defineConfig({
         sourcemap: true,
         lib: {
             entry: path.resolve(__dirname, 'src/lib/index.ts'),
-            name: 'MyLib',
+            name: 'ratflow-sdk-react',
             formats: ['es', 'umd'],
-            fileName: (format) => `my-lib.${format}.js`,
+            fileName: (format) => `ratflow-sdk-react.${format}.js`,
         },
         rollupOptions: {
             external: ['react', 'react-dom', 'styled-components'],
