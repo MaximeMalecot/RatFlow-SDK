@@ -4,9 +4,9 @@ import {
     useGenericTracker,
     useScrollTracker,
     useSubmitTracker,
-} from "./src/hooks";
+} from "./hooks";
 
-import { AnalyticsContextProvider, useAnalytics } from "./src/context";
+import { AnalyticsContextProvider, useAnalytics } from "./context";
 
 export {
     useClickTracker,
