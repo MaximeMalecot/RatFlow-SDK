@@ -4,6 +4,11 @@
     "description": "",
     "main": "index.js",
     "type": "module",
+    "exports": {
+        "./back": "./back/dist/index.js",
+        "./back/types": "./back/dist/types.js",
+        "./front": "./front/dist/index.js"
+    },
     "scripts": {
         "build": "npm run build:front && npm run build:back",
         "build:front": "cd front && npm install && npm run build",

@@ -1,4 +1,4 @@
-import { API_ENDPOINT } from "./constants";
+import { API_ENDPOINT } from "./constants.js";
 import fetch from "node-fetch";
 
 interface SendEventOptions {}
