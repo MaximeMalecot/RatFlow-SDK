@@ -4,7 +4,7 @@ import {
     FetchEventParams,
 } from "./interfaces/analytics-context";
 import React, { createContext, useContext, useEffect } from "react";
-import { sendEvent } from "ratflow-sdk-lib/front";
+import { sendEvent } from "ratflow-sdk-lib-front";
 
 const AnalyticsContext = createContext<AnalyticsContextType>({
     fetchEvent: () => Promise.resolve(),

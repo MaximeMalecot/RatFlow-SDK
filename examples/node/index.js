@@ -1,4 +1,4 @@
-import { sendEvent } from "ratflow-sdk-lib/back";
+import { sendEvent } from "ratflow-sdk-lib-back";
 
 const auth = {
     appId: "app",

@@ -3,9 +3,9 @@
     "version": "0.0.0",
     "description": "",
     "private": true,
+    "type": "commonjs",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
-    "type": "module",
     "libs": [
         "./dist/index.d.ts",
         "./dist/index.js"
@@ -22,7 +22,7 @@
         "typescript": "^5.0.4"
     },
     "dependencies": {
-        "ratflow-sdk-lib": "*",
+        "ratflow-sdk-lib-back": "*",
         "express": "^4.18.2",
         "node-fetch": "^3.3.1"
     }
