@@ -19,7 +19,8 @@ export class AppController {
   @Get('test')
   public test(@Req() req) {
     return this.microService.send('getHello', {
-      ...req['clientData'],});
+      ...req['clientData']
+    });
   }
 
 }

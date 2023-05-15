@@ -5,7 +5,10 @@ interface RatflowConfig {
     appId: string;
     appSecret: string;
     service?: string;
-    immediate?: boolean;
+    options: {
+        immediate?: boolean;
+        showLogs?: boolean;
+    }
 }
 
 interface RatflowData {
@@ -14,7 +17,7 @@ interface RatflowData {
     sessionId?: string;
     eventName: string;
     url: string;
-    userAgent: string;
+    userAgent?: string;
     date: Date;
     //we can add whatever we want here
     customData?: any;
@@ -32,7 +35,9 @@ export function tracker(config: RatflowConfig) {
             !req.headers["x-client-id"] ||
             !req.headers["x-session-id"]
         ) {
-            console.log("missing x-client-id or x-session-id headers")
+            if(config.options.showLogs){
+                console.error("missing x-client-id or x-session-id headers");
+            }
             req["sendRatflow"] = function () { };
             return next();
         }
@@ -53,19 +58,11 @@ export function tracker(config: RatflowConfig) {
                 date: new Date(),
                 customData: rest,
             };
-            if (config.immediate == false) {
-                console.log("immediate is false", {
-                    auth: config,
-                    data,
-                });
+            if (config.options?.immediate == false) {
                 res.on("finish", () => {
                     sendEvent({ auth: config, data });
                 });
             } else {
-                console.log("immediate is true", {
-                    auth: config,
-                    data,
-                });
                 sendEvent({ auth: config, data });
             }
         };

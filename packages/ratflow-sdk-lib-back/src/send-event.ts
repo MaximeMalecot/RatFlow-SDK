@@ -8,6 +8,7 @@ interface SendEventData {
     sessionId?: string;
     eventName: string;
     url: string;
+    userAgent?: string;
     date: Date;
     //we can add whatever we want here
     customData?: any;
@@ -15,7 +16,7 @@ interface SendEventData {
 
 interface SendEventAuth {
     appId: string;
-    appSecret?: string;
+    appSecret: string;
     service?: string;
 }
 
@@ -36,7 +37,7 @@ export const sendEvent = async ({
     const { appId, appSecret, service } = auth;
     const { eventName, url, date, tag, clientId, sessionId, customData } = data;
 
-    if (!appId || !appSecret || !service) {
+    if (!appId || !appSecret) {
         throw new Error("Missing SendEventAuth params");
     }
 
@@ -45,9 +46,7 @@ export const sendEvent = async ({
     }
 
     try {
-        console.log(auth, data);
         if (globalThis.fetch !== undefined) {
-            console.log("here");
             await fetch(`${API_ENDPOINT}`, {
                 method: "POST",
                 headers: {

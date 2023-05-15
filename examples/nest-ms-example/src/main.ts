@@ -16,7 +16,9 @@ async function bootstrap() {
       appId: process.env.RATFLOW_APP_ID ?? 'app',
       appSecret: process.env.RATFLOW_APP_SECRET ?? 'secret',
       service: 'microservice-example',
-      immediate: false,
+      options: {
+        showLogs: true,
+      },
     }),
   );
 

@@ -8,7 +8,10 @@ async function bootstrap() {
     appId: "test",
     appSecret: "test",
     service: "nest-example",
-    immediate: false
+    options: {
+      immediate: false,
+      showLogs: true
+    }
   }));
   await app.listen(3100);
 }

@@ -10,7 +10,9 @@ interface RatflowConfig {
     appId: string;
     appSecret: string;
     service?: string;
-    immediate?: boolean;
+    options: {
+        showLogs?: boolean;
+    }
 }
   
 interface RatflowData {
@@ -19,7 +21,7 @@ interface RatflowData {
     sessionId?: string;
     eventName: string;
     url: string;
-    userAgent: string;
+    userAgent?: string;
     date: Date;
     //we can add whatever we want here
     customData?: any;
@@ -32,11 +34,19 @@ export class RatFlowInterceptor implements NestInterceptor {
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         const ctx = context.switchToRpc();
         const config = this.config;
+        const data = ctx.getData();
+        if(!data['clientId'] || !data['sessionId'] || !data['url']) {
+          if(config.options.showLogs){
+              console.error("missing x-client-id or x-session-id headers");
+          }
+          ctx.getContext().getArgs()['sendRatflowIntercept'] = function () { };
+          return next.handle();
+        }
         const reqData = {
-          clientId: ctx.getData()['clientId'],
-          sessionId: ctx.getData()['sessionId'],
-          userAgent: ctx.getData()['userAgent'],
-          url: ctx.getData()['url'],
+          clientId: data['clientId'],
+          sessionId: data['sessionId'],
+          userAgent: data['userAgent'],
+          url: data['url'],
         };
         ctx.getContext().getArgs()['sendRatflowIntercept'] = function ({
           event,
@@ -48,8 +58,7 @@ export class RatFlowInterceptor implements NestInterceptor {
             date: new Date(),
             customData: rest,
           };
-          console.log({auth: config, data});
-          // sendEvent({ auth: config, data });
+          sendEvent({ auth: config, data });
         };
         return next.handle();
     }
