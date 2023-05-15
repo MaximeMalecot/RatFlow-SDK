@@ -1,5 +1,4 @@
 import { API_ENDPOINT } from "./constants.js";
-const fetch = require("node-fetch");
 
 interface SendEventOptions {}
 
@@ -47,13 +46,25 @@ export const sendEvent = async ({
 
     try {
         console.log(auth, data);
-        await fetch(`${API_ENDPOINT}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ yourData: "here" }),
-        });
+        if (globalThis.fetch !== undefined) {
+            console.log("here");
+            await fetch(`${API_ENDPOINT}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ yourData: "here" }),
+            });
+        } else {
+            const fetch = require("node-fetch");
+            await fetch(`${API_ENDPOINT}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ yourData: "here" }),
+            });
+        }
     } catch (e) {
         console.log(e);
     }
