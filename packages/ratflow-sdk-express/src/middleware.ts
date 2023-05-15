@@ -32,6 +32,7 @@ export function tracker(config: RatflowConfig) {
             !req.headers["x-client-id"] ||
             !req.headers["x-session-id"]
         ) {
+            console.log("missing x-client-id or x-session-id headers")
             req["sendRatflow"] = function () { };
             return next();
         }
@@ -53,11 +54,18 @@ export function tracker(config: RatflowConfig) {
                 customData: rest,
             };
             if (config.immediate == false) {
-                console.log("immediate is false");
+                console.log("immediate is false", {
+                    auth: config,
+                    data,
+                });
                 res.on("finish", () => {
                     sendEvent({ auth: config, data });
                 });
             } else {
+                console.log("immediate is true", {
+                    auth: config,
+                    data,
+                });
                 sendEvent({ auth: config, data });
             }
         };

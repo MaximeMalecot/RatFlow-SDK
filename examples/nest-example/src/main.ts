@@ -7,7 +7,7 @@ async function bootstrap() {
   app.use(tracker({
     appId: "test",
     appSecret: "test",
-    service: "test",
+    service: "nest-example",
     immediate: false
   }));
   await app.listen(3100);

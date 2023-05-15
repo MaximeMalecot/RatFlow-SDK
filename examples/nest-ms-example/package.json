@@ -1,5 +1,5 @@
 {
-  "name": "nest-example",
+  "name": "nest-ms-example",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -22,11 +22,11 @@
   "dependencies": {
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
-    "@nestjs/microservices": "^9.4.0",
     "@nestjs/platform-express": "^9.0.0",
-    "ratflow-sdk-express": "*",
+    "class-validator": "^0.14.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "ratflow-sdk-nest-ms": "*"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
