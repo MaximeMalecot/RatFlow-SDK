@@ -9,6 +9,7 @@ export interface FetchEventParams {
 export interface AnalyticsContextProviderOptions {
     debug?: boolean;
     trackMouse?: boolean;
+    useBeacon?: boolean;
 }
 export interface AnalyticsContextProviderProps {
     children: React.ReactNode;

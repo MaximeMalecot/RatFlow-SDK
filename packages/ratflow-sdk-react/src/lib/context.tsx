@@ -42,14 +42,14 @@ export const AnalyticsContextProvider: React.FC<
             date: new Date(),
         };
 
-        const options = {
-            useBeacon: true,
+        const sdkOptions = {
+            useBeacon: options ? options.useBeacon??true : true,
         };
 
         await sendEvent({
             auth,
             data: dataOptions,
-            options,
+            options: sdkOptions,
         });
     };
 
