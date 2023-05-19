@@ -15,6 +15,6 @@ export default function useScrollTracker({ tag }: UseTrackerProps) {
             clientWidth
         }
     }
-    const { ref } = useGenericTracker({ tag, type: "scroll", cb });
+    const { ref } = useGenericTracker({ tag, type: "scroll", cb, useDebounce: true });
     return { ref };
 }
