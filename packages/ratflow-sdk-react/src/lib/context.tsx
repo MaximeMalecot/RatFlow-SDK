@@ -31,19 +31,20 @@ export const AnalyticsContextProvider: React.FC<
 
     const fetchEvent = async (event: FetchEventParams) => {
         const { tag, type, data } = event;
-        const page = currentPage ? currentPage : window.location.pathname;
+        const url = currentPage ? currentPage : window.location.pathname;
 
         if (!auth) return console.error("No auth provided");
 
         const dataOptions = {
             tag: tag ?? "unset",
             eventName: type,
-            url: page,
+            url: url,
             date: new Date(),
+            customData: data??null,
         };
 
         const sdkOptions = {
-            useBeacon: options ? options.useBeacon??true : true,
+            useBeacon: options ? options.useBeacon ?? true : true,
         };
 
         await sendEvent({
