@@ -6,10 +6,17 @@ export interface FetchEventParams {
     data?: any
 }
 
+export interface AnalyticsContextProviderOptions {
+    debug?: boolean;
+    trackMouse?: boolean;
+    useBeacon?: boolean;
+}
 export interface AnalyticsContextProviderProps {
     children: React.ReactNode;
-    config: {
-        token: string;
+    options?: AnalyticsContextProviderOptions;
+    auth: {
+        appId: string;
+        appSecret: string;
     };
 }
 

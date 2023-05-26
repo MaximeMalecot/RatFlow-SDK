@@ -47,12 +47,14 @@ export const sendEvent = async ({
         throw new Error("Missing SendEventData params");
     }
 
-    try{
+    console.log("received:", data);
+    
+    try {
         if (useBeacon) {
             //TODO: implement beacon
             console.log("beacon");
         } else {
-            console.log(API_ENDPOINT)
+            console.log(API_ENDPOINT);
             await fetch(`${API_ENDPOINT}`, {
                 method: "POST",
                 headers: {
@@ -61,8 +63,7 @@ export const sendEvent = async ({
                 body: JSON.stringify({ yourData: "here" }),
             });
         }
-    }catch(e){
-        console.log(e)
+    } catch (e) {
+        console.log(e);
     }
-    
 };

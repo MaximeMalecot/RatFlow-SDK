@@ -1,8 +1,12 @@
-import {
-    useAnalytics,
-} from "../context";
+import { useAnalytics } from "../context";
 import { useEffect, useRef } from "react";
-import { TypeMappingInterface, UseGenericTrackerProps, UseTrackerProps } from "../interfaces/tracker";
+import {
+    TypeMappingInterface,
+    UseGenericTrackerProps,
+    UseTrackerProps,
+} from "../interfaces/tracker";
+import { FetchEventParams } from "../interfaces/analytics-context";
+import { debounce } from "../helpers";
 
 const typeMapping: TypeMappingInterface = {
     "double-click": "dblclick",
@@ -14,6 +18,7 @@ export default function useGenericTracker({
     tag,
     type: rawType,
     cb,
+    useDebounce = false,
 }: UseGenericTrackerProps) {
     const ref = useRef<any>(null); //Any à changer
     const { fetchEvent } = useAnalytics();
@@ -29,7 +34,10 @@ export default function useGenericTracker({
                 data,
             });
         };
-        ref.current.addEventListener(type, listener);
+        ref.current.addEventListener(
+            type,
+            debounce(listener, useDebounce ? 300 : 0)
+        );
         return () => {
             ref.current?.removeEventListener(type, listener);
         };

@@ -8,24 +8,26 @@ import {
     Routes,
     useLocation,
 } from "react-router-dom";
-import NotFound from "./components/not-found";
-import Home from "./components/home";
+import NotFound from "./pages/not-found";
+import Home from "./pages/home";
 import { useEffect } from "react";
 import { useAnalytics } from "ratflow-sdk-react";
+import LongPage from "./pages/long-page";
 
 function AppLayout() {
     return (
-        <div>
-            <nav>
+        <>
+            <nav style={{display: "flex", gap: "10px", justifyContent: "center"}}>
                 <Link to="/">Home</Link>
-                <Link to="/fdsfds">???</Link>
+                <Link to="/long-page">Long page</Link>
+                <Link to="/about">About</Link>
             </nav>
             <Outlet />
-        </div>
+        </>
     );
 }
 function App() {
-    const { ref } = useScrollTracker({ tag: "div" });
+    const { ref } = useScrollTracker({ tag: "main-app" });
     const { pathname } = useLocation();
     const { setCurrentPage } = useAnalytics();
 
@@ -34,10 +36,11 @@ function App() {
     }, [pathname]);
 
     return (
-        <div ref={ref} className="App">
+        <div ref={ref} className="App" style={{height: "100%", width: "100%", overflowY: "scroll"}}>
             <Routes>
                 <Route path="/" element={<AppLayout />}>
                     <Route path="/" element={<Home />} />
+                    <Route path="/long-page" element={<LongPage />} />
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>
