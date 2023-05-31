@@ -78,8 +78,9 @@ export const AnalyticsContextProvider: React.FC<
     };
 
     const stopSession = () => {
-        setSessionData((prev: SessionData) => ({...prev, sessionEnd: new Date()}));
-        const { sessionId, ...data } = sessionData;
+        const newSession = {...sessionData, sessionEnd: new Date()};
+        setSessionData(newSession);
+        const { sessionId, ...data } = newSession;
         fetchEvent({ type: SESSION_END, data });
     }
 
