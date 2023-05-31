@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface UseTimerProps {
     delay: number;
@@ -6,10 +6,12 @@ interface UseTimerProps {
 
 export default function useTimer({delay}: UseTimerProps = {delay: 10000}){
     const [timer, setTimer] = useState<number | null>(null);
-    const [cb, setCb] = useState<(Function) | null>(null);
+    // const [cb, setCb] = useState<(Function) | null>(null);
+    const cbRef = useRef<Function | null>(null);
 
     const resetTimer = () => {
-        if(!cb){
+        if(!cbRef.current){
+            console.error("No callback provided", cbRef);
             return;
         }
 
@@ -17,17 +19,19 @@ export default function useTimer({delay}: UseTimerProps = {delay: 10000}){
             clearTimeout(timer);
         }
 
-        const newTimer = setTimeout(cb, delay)
+        const newTimer = setTimeout(cbRef.current, delay)
         setTimer(newTimer);
     }
 
     const setTimerCallback = (callback: Function) => {
+        console.log("Setting timer callback");
         try{
             if(!callback || typeof callback !== "function"){
                 throw new Error("Invalid timer callback provided");
             }
 
-            setCb(() => callback);
+            // setCb(() => callback);
+            cbRef.current = callback;
             const newTimer = setTimeout(callback, delay);
             setTimer(newTimer);
         }catch(e: any){
@@ -38,6 +42,7 @@ export default function useTimer({delay}: UseTimerProps = {delay: 10000}){
     useEffect(() => {
         return () => {
             if(timer){
+                console.log("Clearing timer");
                 clearTimeout(timer);
             }
         }

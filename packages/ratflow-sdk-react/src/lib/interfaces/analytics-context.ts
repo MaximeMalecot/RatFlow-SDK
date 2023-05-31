@@ -1,7 +1,12 @@
+export interface FetchEventOptions {
+    affectSession?: boolean;
+}
+
 export interface FetchEventParams {
     tag?: string;
     type: string;
-    data?: any
+    data?: any,
+    options?: FetchEventOptions;
 }
 
 export interface AnalyticsContextProviderOptions {

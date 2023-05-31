@@ -35,8 +35,8 @@ export const AnalyticsContextProvider: React.FC<
     AnalyticsContextProviderProps
 > = ({ children, auth, options }: AnalyticsContextProviderProps) => {
     const [currentPage, setCurrentPage] = React.useState<string | null>(null);
-    const [clientData, setClientData] = React.useState<ClientData | null>(null);
-    const [sessionData, setSessionData] = React.useState<SessionData | null>(null);
+    // const [clientData, setClientData] = React.useState<ClientData | null>(null);
+    // const [sessionData, setSessionData] = React.useState<SessionData | null>(null);
     const { setTimerCallback, resetTimer } = useTimer({ delay: 10000 });
     const clientDataRef = React.useRef<ClientData | null>(null);
     const sessionDataRef = React.useRef<SessionData | null>(null);
@@ -44,17 +44,20 @@ export const AnalyticsContextProvider: React.FC<
     const fetchEvent = async (event: FetchEventParams) => {
         try{
             if (!auth || !auth.appId) throw new Error("Invalid auth provided");
+
+            const sessionData = sessionDataRef.current;
+            const clientData = clientDataRef.current;
+            if(!clientData) throw new Error("Missing client data");
+            if(!sessionData) throw new Error("Missing session data");
+            const { sessionId } = sessionData;
+            if(!sessionId) throw new Error("Missing session id");
+
             const { tag, type, data } = event;
             if(!type) throw new Error("Missing event type");
-            if(!sessionDataRef.current) throw new Error("Missing session data");
-            if(!clientDataRef.current) throw new Error("Missing client data");
-            const { sessionId } = sessionDataRef.current;
-
-            if(!sessionId) throw new Error("Missing session id");
 
             const dataOptions = {
                 sessionId,
-                ...clientDataRef.current,
+                ...clientData,
                 tag: tag,
                 eventName: type,
                 url: currentPage ? currentPage : window.location.pathname,
@@ -72,8 +75,14 @@ export const AnalyticsContextProvider: React.FC<
                 options: sdkOptions,
             });
 
-            restartSession();
-            resetTimer();
+            const { options: eventOptions } = event;
+            
+            //To not restart the session when for example the "session_end" event is sent
+            if(eventOptions == undefined || eventOptions.affectSession == undefined || eventOptions.affectSession !== false ){
+                resetTimer();
+                restartSession()
+            }
+            
 
         }catch(e: any){
             console.error(e.message);
@@ -82,42 +91,43 @@ export const AnalyticsContextProvider: React.FC<
     };
 
     const stopSession = () => {
-        console.log("Session ended", sessionDataRef.current);
         if(!sessionDataRef.current) return;
         const newSession = {...sessionDataRef.current, sessionEnd: new Date()};
-        setSessionData(newSession);
+        // setSessionData(newSession);
         sessionDataRef.current = newSession;
         const { sessionId, ...data } = newSession;
-        fetchEvent({ type: SESSION_END, data });
+        fetchEvent({ type: SESSION_END, data, options: {affectSession: false} });
     }
 
+    //Checks if the session was ended before the request, if so, restarts a new session
     const restartSession = () => {
-        if(!sessionDataRef.current || !sessionDataRef.current.sessionEnd || !clientDataRef.current) return;
+        if(!sessionDataRef.current || !sessionDataRef.current.sessionEnd || !clientDataRef.current) return sessionDataRef.current;
         const newSession = {...generateSessionData(clientDataRef.current.clientId)};
-        setSessionData(newSession);
+        // setSessionData(newSession);
         sessionDataRef.current = newSession;
+        return newSession;
     }
  
     const setupLocalData = async () => {
         const data = await getClientData();
-        setClientData(data);
+        // setClientData(data);
         clientDataRef.current = data;
 
         const localSessionData = generateSessionData(data.clientId)
-        setSessionData(localSessionData);
+        // setSessionData(localSessionData);
         sessionDataRef.current = localSessionData;
     }
 
     useEffect(() => {
         setupLocalData();
+        setTimerCallback(stopSession);
     }, [auth])
 
-    useEffect(() => {
-        setTimerCallback(stopSession);
-    }, []);
+    // useEffect(() => {
+    // }, []);
 
     useEffect(() => {
-        if(!clientData) return;
+        if(!clientDataRef.current) return;
         if (!options?.trackMouse) return;
 
         const listenerCb = debounce((e: MouseEvent) => {
@@ -131,13 +141,13 @@ export const AnalyticsContextProvider: React.FC<
         document.addEventListener("mousemove", listenerCb);
 
         return () => document.removeEventListener("mousemove", listenerCb);
-    }, [options, clientData]);
+    }, [options, clientDataRef]);
 
     useEffect(() => {
-        if(!clientData) return;
+        if(!clientDataRef.current) return;
         if (!currentPage) return;
         fetchEvent({ type: PAGE_CHANGED });
-    }, [currentPage, clientData]);
+    }, [currentPage, clientDataRef]);
 
     return (
         <AnalyticsContext.Provider value={{ fetchEvent, setCurrentPage }}>
