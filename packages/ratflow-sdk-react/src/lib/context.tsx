@@ -36,14 +36,14 @@ export const AnalyticsContextProvider: React.FC<
     const [currentPage, setCurrentPage] = React.useState<string | null>(null);
     const [sessionData, setSessionData] = React.useState<SessionData>(generateSessionData());
     const [clientData, setClientData] = React.useState<ClientData>(getClientData());
-    const { setCb, resetTimer } = useTimer({ delay: 10000 });
+    const { setTimerCallback, resetTimer } = useTimer({ delay: 10000 });
 
     const fetchEvent = async (event: FetchEventParams) => {
         try{
             if (!auth || !auth.appId) throw new Error("Invalid auth provided");
             const { tag, type, data } = event;
             if(!type) throw new Error("Missing event type");
-            const { sessionId, ...sessionDataRest } = sessionData;
+            const { sessionId } = sessionData;
 
             if(!sessionId) throw new Error("Missing session id");
             if(!clientData) throw new Error("Missing client data");
@@ -78,7 +78,6 @@ export const AnalyticsContextProvider: React.FC<
     };
 
     const stopSession = () => {
-        console.log("triggered")
         setSessionData((prev: SessionData) => ({...prev, sessionEnd: new Date()}));
         const { sessionId, ...data } = sessionData;
         fetchEvent({ type: SESSION_END, data });
@@ -86,7 +85,7 @@ export const AnalyticsContextProvider: React.FC<
 
     const restartSession = () => {
         if(!sessionData.sessionEnd) return;
-        setSessionData(generateSessionData());
+        setSessionData(() => ({...generateSessionData()}));
     }
 
     useEffect(() => {
@@ -111,8 +110,8 @@ export const AnalyticsContextProvider: React.FC<
     }, [currentPage]);
 
     useEffect(() => {
-        setCb(stopSession);
-    }, [auth]);
+        setTimerCallback(stopSession);
+    }, []);
 
     return (
         <AnalyticsContext.Provider value={{ fetchEvent, setCurrentPage }}>

@@ -11,7 +11,7 @@ const authConfig = {
 };
 
 const sdkOptions = {
-    trackMouse: true
+    trackMouse: false
 };
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

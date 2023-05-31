@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
-interface useTimerProps {
+interface UseTimerProps {
     delay: number;
 }
 
-export default function useTimer({delay}: useTimerProps = {delay: 10000}){
+export default function useTimer({delay}: UseTimerProps = {delay: 10000}){
     const [timer, setTimer] = useState<number | null>(null);
-    const [cb, setCb] = useState<Function | null>(null);
+    const [cb, setCb] = useState<(Function) | null>(null);
 
     const resetTimer = () => {
         if(!cb){
@@ -21,15 +21,27 @@ export default function useTimer({delay}: useTimerProps = {delay: 10000}){
         setTimer(newTimer);
     }
 
+    const setTimerCallback = (callback: Function) => {
+        try{
+            if(!callback || typeof callback !== "function"){
+                throw new Error("Invalid timer callback provided");
+            }
+
+            setCb(() => callback);
+            const newTimer = setTimeout(callback, delay);
+            setTimer(newTimer);
+        }catch(e: any){
+            console.error(e.message);
+        }
+    }
+
     useEffect(() => {
-        console.log("set")
         return () => {
-            console.log("clear")
             if(timer){
                 clearTimeout(timer);
             }
         }
-    }, [cb]);
+    }, [timer]);
 
-    return { setCb, resetTimer }
+    return { setTimerCallback, resetTimer }
 }
