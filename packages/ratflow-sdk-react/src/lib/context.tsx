@@ -6,6 +6,7 @@ import {
 import React, { createContext, useContext, useEffect } from "react";
 import { sendEvent } from "ratflow-sdk-lib-front";
 import { debounce } from "./helpers";
+import { MOUSE_MOVED, PAGE_CHANGED } from "./constants/events";
 
 const AnalyticsContext = createContext<AnalyticsContextType>({
     fetchEvent: () => Promise.resolve(),
@@ -60,7 +61,7 @@ export const AnalyticsContextProvider: React.FC<
         const listenerCb = debounce((e: MouseEvent) => {
             const { pageX, pageY } = e;
             fetchEvent({
-                type: "mousemove",
+                type: MOUSE_MOVED,
                 data: { pageX, pageY },
             });
         }, 1000);
@@ -72,7 +73,7 @@ export const AnalyticsContextProvider: React.FC<
 
     useEffect(() => {
         if (!currentPage) return;
-        fetchEvent({ type: "page-changed" });
+        fetchEvent({ type: PAGE_CHANGED });
     }, [currentPage]);
 
     return (

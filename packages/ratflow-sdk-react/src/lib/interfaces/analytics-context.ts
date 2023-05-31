@@ -1,8 +1,6 @@
-import { EventTypes } from "./events";
-
 export interface FetchEventParams {
     tag?: string;
-    type: EventTypes;
+    type: string;
     data?: any
 }
 
@@ -16,7 +14,7 @@ export interface AnalyticsContextProviderProps {
     options?: AnalyticsContextProviderOptions;
     auth: {
         appId: string;
-        appSecret: string;
+        service?: string;
     };
 }
 
