@@ -6,12 +6,12 @@ import { AnalyticsContextProvider } from "ratflow-sdk-react";
 import { BrowserRouter } from "react-router-dom";
 
 const authConfig = {
-    appId: "YOUR_APP_ID",
-    appSecret: "APP_SECRET",
+    appId: "YOUR_APP_ID"
 };
 
 const sdkOptions = {
-    trackMouse: true
+    trackMouse: false,
+    useBeacon: true
 };
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

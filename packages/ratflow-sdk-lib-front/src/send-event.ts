@@ -5,19 +5,20 @@ interface SendEventOptions {
 }
 
 interface SendEventData {
-    tag?: string;
     clientId?: string;
     sessionId?: string;
     eventName: string;
     url: string;
-    date: Date;
     //we can add whatever we want here
+    userAgent?: string;
+    ip?: string;
+    date: Date;
     customData?: any;
+    tag?: string;
 }
 
 interface SendEventAuth {
     appId: string;
-    appSecret?: string;
     service?: string;
 }
 
@@ -35,32 +36,33 @@ export const sendEvent = async ({
     if (!auth.appId) {
         throw new Error("appId is required");
     }
-    const { appId, appSecret, service } = auth;
-    const { eventName, url, date, tag, clientId, sessionId, customData } = data;
+    const { appId, service } = auth;
+    const { eventName, url, date, tag, clientId, sessionId, customData, ip, userAgent } = data;
     const { useBeacon } = options;
 
     if (!appId) {
         throw new Error("Missing SendEventAuth params");
     }
 
-    if (!eventName || !url || !date) {
+    if (!eventName || !url || !date || !clientId || !sessionId || !userAgent) {
         throw new Error("Missing SendEventData params");
     }
-
-    console.log("received:", data);
     
+    const rawFull = {
+        ...auth,
+        ...data,
+    }
+
     try {
-        if (useBeacon) {
-            //TODO: implement beacon
-            console.log("beacon");
+        if (useBeacon && "sendBeacon" in navigator) {
+            navigator.sendBeacon(`${API_ENDPOINT}`, JSON.stringify(rawFull));
         } else {
-            console.log(API_ENDPOINT);
             await fetch(`${API_ENDPOINT}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ yourData: "here" }),
+                body: JSON.stringify(rawFull),
             });
         }
     } catch (e) {

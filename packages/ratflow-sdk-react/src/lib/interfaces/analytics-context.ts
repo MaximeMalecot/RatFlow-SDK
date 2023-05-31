@@ -1,9 +1,12 @@
-import { EventTypes } from "./events";
+export interface FetchEventOptions {
+    affectSession?: boolean;
+}
 
 export interface FetchEventParams {
     tag?: string;
-    type: EventTypes;
-    data?: any
+    type: string;
+    data?: any,
+    options?: FetchEventOptions;
 }
 
 export interface AnalyticsContextProviderOptions {
@@ -16,11 +19,22 @@ export interface AnalyticsContextProviderProps {
     options?: AnalyticsContextProviderOptions;
     auth: {
         appId: string;
-        appSecret: string;
+        service?: string;
     };
 }
 
 export interface AnalyticsContextType {
     fetchEvent: (event: FetchEventParams) => Promise<void>;
     setCurrentPage: any;
+}
+
+export interface SessionData {
+    sessionId: string;
+    sessionStart: Date;
+    sessionEnd: Date | null;
+}
+
+export interface ClientData {
+    clientId: string;
+    userAgent: string;
 }
