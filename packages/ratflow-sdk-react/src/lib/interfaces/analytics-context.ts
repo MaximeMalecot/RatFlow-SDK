@@ -22,3 +22,15 @@ export interface AnalyticsContextType {
     fetchEvent: (event: FetchEventParams) => Promise<void>;
     setCurrentPage: any;
 }
+
+export interface SessionData {
+    sessionId: string;
+    sessionStart: Date;
+    sessionEnd: Date | null;
+}
+
+export interface ClientData {
+    clientId: string;
+    ip: string;
+    userAgent: string;
+}
