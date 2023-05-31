@@ -10,7 +10,8 @@ const authConfig = {
 };
 
 const sdkOptions = {
-    trackMouse: false
+    trackMouse: false,
+    useBeacon: true
 };
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(

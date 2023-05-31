@@ -36,6 +36,5 @@ export interface SessionData {
 
 export interface ClientData {
     clientId: string;
-    ip: string;
     userAgent: string;
 }

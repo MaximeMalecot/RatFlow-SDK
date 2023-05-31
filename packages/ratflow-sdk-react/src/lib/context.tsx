@@ -35,8 +35,6 @@ export const AnalyticsContextProvider: React.FC<
     AnalyticsContextProviderProps
 > = ({ children, auth, options }: AnalyticsContextProviderProps) => {
     const [currentPage, setCurrentPage] = React.useState<string | null>(null);
-    // const [clientData, setClientData] = React.useState<ClientData | null>(null);
-    // const [sessionData, setSessionData] = React.useState<SessionData | null>(null);
     const { setTimerCallback, resetTimer } = useTimer({ delay: 10000 });
     const clientDataRef = React.useRef<ClientData | null>(null);
     const sessionDataRef = React.useRef<SessionData | null>(null);
@@ -122,9 +120,6 @@ export const AnalyticsContextProvider: React.FC<
         setupLocalData();
         setTimerCallback(stopSession);
     }, [auth])
-
-    // useEffect(() => {
-    // }, []);
 
     useEffect(() => {
         if(!clientDataRef.current) return;

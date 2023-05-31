@@ -12,7 +12,6 @@ async function getClientId(): Promise<string>{
 export async function getClientData(): Promise<ClientData>{
     return {
         clientId: await getClientId(),
-        ip: "ip",
-        userAgent: "user_agent",
+        userAgent: window.navigator.userAgent,
     }
 }
