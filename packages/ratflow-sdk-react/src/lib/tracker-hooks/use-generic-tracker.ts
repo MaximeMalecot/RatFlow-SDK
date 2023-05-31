@@ -8,21 +8,14 @@ import {
 import { FetchEventParams } from "../interfaces/analytics-context";
 import { debounce } from "../helpers";
 
-const typeMapping: TypeMappingInterface = {
-    "double-click": "dblclick",
-    "mouse-over": "mouseover",
-    changed: "change",
-};
-
 export default function useGenericTracker({
     tag,
-    type: rawType,
+    type,
     cb,
     useDebounce = false,
 }: UseGenericTrackerProps) {
     const ref = useRef<any>(null); //Any à changer
     const { fetchEvent } = useAnalytics();
-    const type = rawType in typeMapping ? typeMapping[rawType] : rawType;
 
     useEffect(() => {
         if (!ref.current) return;
