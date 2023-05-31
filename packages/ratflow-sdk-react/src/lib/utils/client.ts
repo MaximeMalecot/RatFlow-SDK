@@ -1,13 +1,19 @@
 import { ClientData } from "../interfaces/analytics-context";
+import FingerPrintJS from "@fingerprintjs/fingerprintjs";
 
-function getClientId(): string{
-    return "client_id";
+const fpPromise = FingerPrintJS.load();
+
+
+async function getClientId(): Promise<string>{
+    const fp = await fpPromise;
+    const result = await fp.get();
+    return result.visitorId;
 };
 
 
-export function getClientData(): ClientData{
+export async function getClientData(): Promise<ClientData>{
     return {
-        clientId: getClientId(),
+        clientId: await getClientId(),
         ip: "ip",
         userAgent: "user_agent",
     }

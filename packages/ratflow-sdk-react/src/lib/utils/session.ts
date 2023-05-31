@@ -1,13 +1,13 @@
 import { SessionData } from "../interfaces/analytics-context";
+import sha256 from 'crypto-js/sha256';
 
-export const generateSessionId = () => {
-    return "session_id";
-}
+export function generateSessionData(clientId: string): SessionData{
+    const data = clientId + Date.now().toString()
+    const sessionId = sha256(data).toString();
 
-export function generateSessionData(): SessionData{
     return {
         sessionStart: new Date(),
         sessionEnd: null,
-        sessionId: generateSessionId()
+        sessionId: sessionId
     }
 }
