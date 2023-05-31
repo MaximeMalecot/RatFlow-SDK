@@ -47,8 +47,6 @@ export const sendEvent = async ({
     if (!eventName || !url || !date || !clientId || !sessionId || !userAgent) {
         throw new Error("Missing SendEventData params");
     }
-
-    console.log("received:", data);
     
     const rawFull = {
         ...auth,
@@ -57,11 +55,8 @@ export const sendEvent = async ({
 
     try {
         if (useBeacon && "sendBeacon" in navigator) {
-            //TODO: implement beacon
-            console.log("beacon");
             navigator.sendBeacon(`${API_ENDPOINT}`, JSON.stringify(rawFull));
         } else {
-            console.log(API_ENDPOINT);
             await fetch(`${API_ENDPOINT}`, {
                 method: "POST",
                 headers: {

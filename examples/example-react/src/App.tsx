@@ -32,7 +32,6 @@ function App() {
     const { setCurrentPage } = useAnalytics();
 
     useEffect(() => {
-        console.log(pathname)
         setCurrentPage(pathname);
     }, [pathname]);
 

@@ -24,7 +24,6 @@ export default function useTimer({delay}: UseTimerProps = {delay: 10000}){
     }
 
     const setTimerCallback = (callback: Function) => {
-        console.log("Setting timer callback");
         try{
             if(!callback || typeof callback !== "function"){
                 throw new Error("Invalid timer callback provided");
@@ -42,7 +41,6 @@ export default function useTimer({delay}: UseTimerProps = {delay: 10000}){
     useEffect(() => {
         return () => {
             if(timer){
-                console.log("Clearing timer");
                 clearTimeout(timer);
             }
         }
