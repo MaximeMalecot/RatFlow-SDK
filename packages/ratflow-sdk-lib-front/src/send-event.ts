@@ -55,9 +55,9 @@ export const sendEvent = async ({
 
     try {
         if (useBeacon && "sendBeacon" in navigator) {
-            navigator.sendBeacon(`${API_ENDPOINT}`, JSON.stringify(rawFull));
+            navigator.sendBeacon(API_ENDPOINT, JSON.stringify(rawFull));
         } else {
-            await fetch(`${API_ENDPOINT}`, {
+            await fetch(API_ENDPOINT, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
