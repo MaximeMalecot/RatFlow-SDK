@@ -43,15 +43,26 @@ export const AnalyticsContextProvider: React.FC<
         try{
             if (!auth || !auth.appId) throw new Error("Invalid auth provided");
 
+            let sessionId;
             const sessionData = sessionDataRef.current;
             const clientData = clientDataRef.current;
             if(!clientData) throw new Error("Missing client data");
             if(!sessionData) throw new Error("Missing session data");
-            const { sessionId } = sessionData;
-            if(!sessionId) throw new Error("Missing session id");
-
+           
             const { tag, type, data } = event;
             if(!type) throw new Error("Missing event type");
+
+            const { options: eventOptions } = event;
+            
+            //To not restart the session when for example the "session_end" event is sent
+            if(eventOptions == undefined || eventOptions.affectSession == undefined || eventOptions.affectSession !== false ){
+                resetTimer();
+                sessionId = getOrRestartSession()?.sessionId;
+            }else{
+                sessionId = sessionData.sessionId;
+            }
+
+            if(!sessionId) throw new Error("Missing session id");
 
             const dataOptions = {
                 sessionId,
@@ -62,6 +73,8 @@ export const AnalyticsContextProvider: React.FC<
                 date: new Date(),
                 customData: data??null,
             };
+
+            console.log(dataOptions.eventName, dataOptions.sessionId)
     
             const sdkOptions = {
                 useBeacon: options ? options.useBeacon ?? true : true,
@@ -72,15 +85,6 @@ export const AnalyticsContextProvider: React.FC<
                 data: dataOptions,
                 options: sdkOptions,
             });
-
-            const { options: eventOptions } = event;
-            
-            //To not restart the session when for example the "session_end" event is sent
-            if(eventOptions == undefined || eventOptions.affectSession == undefined || eventOptions.affectSession !== false ){
-                resetTimer();
-                restartSession()
-            }
-            
 
         }catch(e: any){
             console.error(e.message);
@@ -98,7 +102,7 @@ export const AnalyticsContextProvider: React.FC<
     }
 
     //Checks if the session was ended before the request, if so, restarts a new session
-    const restartSession = () => {
+    const getOrRestartSession = () => {
         if(!sessionDataRef.current || !sessionDataRef.current.sessionEnd || !clientDataRef.current) return sessionDataRef.current;
         const newSession = {...generateSessionData(clientDataRef.current.clientId)};
         // setSessionData(newSession);
