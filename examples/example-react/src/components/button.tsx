@@ -1,7 +1,7 @@
-import { useDoubleClick } from "ratflow-sdk-react";
+import { useClickTracker, useDoubleClick } from "ratflow-sdk-react";
 
 export default function Button() {
-    const { ref } = useDoubleClick({ tag: "button" });
+    const { ref } = useClickTracker({ tag: "button" });
 
     return <button ref={ref}>Yo</button>;
 }

@@ -3,6 +3,7 @@ export interface UseGenericTrackerProps {
     type: string;
     cb?: (data: any) => void;
     useDebounce?: boolean;
+    trackPrinting?: boolean;
 }
 
 export type UseTrackerProps = Pick<UseGenericTrackerProps, "tag">;
