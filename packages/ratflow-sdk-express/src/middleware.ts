@@ -27,7 +27,12 @@ export function tracker(config: RatflowConfig) {
         res: Response,
         next: NextFunction
     ) {
+        const { options, ...auth } = config;
 
+        if (!auth.appId || !auth.appSecret) {
+            throw new Error("Missing SendEventAuth params");
+        }
+        
         const reqData = {
             userAgent: req.headers["user-agent"]?.toString() ?? "null",
             url: req.url,
@@ -44,10 +49,10 @@ export function tracker(config: RatflowConfig) {
             };
             if (config.options?.immediate == false) {
                 res.on("finish", () => {
-                    sendEvent({ auth: config, data });
+                    sendEvent({ auth, data, options });
                 });
             } else {
-                sendEvent({ auth: config, data });
+                sendEvent({ auth, data, options });
             }
         };
         next();

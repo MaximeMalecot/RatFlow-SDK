@@ -49,6 +49,7 @@ export const sendEvent = async ({
     }
 
     try {
+        console.log("sending event", rawFull);
         if (globalThis.fetch !== undefined) {
             await fetch(`${API_ENDPOINT}`, {
                 method: "POST",
