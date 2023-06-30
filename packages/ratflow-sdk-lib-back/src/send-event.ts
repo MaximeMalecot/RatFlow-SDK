@@ -3,14 +3,12 @@ import { API_ENDPOINT } from "./constants.js";
 interface SendEventOptions {}
 
 interface SendEventData {
-    tag?: string;
-    clientId?: string;
-    sessionId?: string;
     eventName: string;
     url: string;
-    userAgent?: string;
-    date: Date;
     //we can add whatever we want here
+    userAgent?: string;
+    ip?: string;
+    date: Date;
     customData?: any;
 }
 
@@ -35,7 +33,7 @@ export const sendEvent = async ({
         throw new Error("appId is required");
     }
     const { appId, appSecret, service } = auth;
-    const { eventName, url, date, tag, clientId, sessionId, customData } = data;
+    const { eventName, url, userAgent, ip, date, customData } = data;
 
     if (!appId || !appSecret) {
         throw new Error("Missing SendEventAuth params");
@@ -45,6 +43,11 @@ export const sendEvent = async ({
         throw new Error("Missing SendEventData params");
     }
 
+    const rawFull = {
+        ...auth,
+        ...data,
+    }
+
     try {
         if (globalThis.fetch !== undefined) {
             await fetch(`${API_ENDPOINT}`, {
@@ -52,7 +55,7 @@ export const sendEvent = async ({
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ yourData: "here" }),
+                body: JSON.stringify(rawFull),
             });
         } else {
             const fetch = require("node-fetch");
@@ -61,7 +64,7 @@ export const sendEvent = async ({
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ yourData: "here" }),
+                body: JSON.stringify(rawFull),
             });
         }
     } catch (e) {
