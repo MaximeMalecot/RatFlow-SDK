@@ -16,15 +16,13 @@ interface RatflowConfig {
 }
   
 interface RatflowData {
-    tag?: string;
-    clientId?: string;
-    sessionId?: string;
-    eventName: string;
-    url: string;
-    userAgent?: string;
-    date: Date;
-    //we can add whatever we want here
-    customData?: any;
+  eventName: string;
+  url: string;
+  //we can add whatever we want here
+  userAgent?: string;
+  ip?: string;
+  date: Date;
+  customData?: any;
 }
   
 export class RatFlowInterceptor implements NestInterceptor {
@@ -35,16 +33,14 @@ export class RatFlowInterceptor implements NestInterceptor {
         const ctx = context.switchToRpc();
         const config = this.config;
         const data = ctx.getData();
-        if(!data['clientId'] || !data['sessionId'] || !data['url']) {
+        if(!data['url']) {
           if(config.options.showLogs){
-              console.error("missing x-client-id or x-session-id headers");
+              console.error("missing url");
           }
           ctx.getContext().getArgs()['sendRatflowIntercept'] = function () { };
           return next.handle();
         }
         const reqData = {
-          clientId: data['clientId'],
-          sessionId: data['sessionId'],
           userAgent: data['userAgent'],
           url: data['url'],
         };

@@ -31,7 +31,6 @@ export function tracker(config: RatflowConfig) {
         const reqData = {
             userAgent: req.headers["user-agent"]?.toString() ?? "null",
             url: req.url,
-            date: new Date(),
         };
 
         req["clientData"] = reqData;
