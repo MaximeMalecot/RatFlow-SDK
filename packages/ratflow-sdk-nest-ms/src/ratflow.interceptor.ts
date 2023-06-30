@@ -47,7 +47,7 @@ export class RatFlowInterceptor implements NestInterceptor {
     const data = ctx.getData();
     if (!data["url"]) {
       if (options.showLogs) {
-        console.error("missing url");
+        console.error("Missing url");
       }
       ctx.getContext().getArgs()["sendRatflowIntercept"] = function () {};
       return next.handle();
