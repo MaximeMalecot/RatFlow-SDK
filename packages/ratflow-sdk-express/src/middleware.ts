@@ -12,15 +12,13 @@ interface RatflowConfig {
 }
 
 interface RatflowData {
-    tag?: string;
-    clientId?: string;
-    sessionId?: string;
-    eventName: string;
-    url: string;
-    userAgent?: string;
-    date: Date;
-    //we can add whatever we want here
-    customData?: any;
+  eventName: string;
+  url: string;
+  //we can add whatever we want here
+  userAgent?: string;
+  ip?: string;
+  date: Date;
+  customData?: any;
 }
 
 export function tracker(config: RatflowConfig) {
@@ -30,23 +28,10 @@ export function tracker(config: RatflowConfig) {
         next: NextFunction
     ) {
 
-      if (
-            !req.headers ||
-            !req.headers["x-client-id"] ||
-            !req.headers["x-session-id"]
-        ) {
-            if(config.options.showLogs){
-                console.error("missing x-client-id or x-session-id headers");
-            }
-            req["sendRatflow"] = function () { };
-            return next();
-        }
-
         const reqData = {
-            clientId: req.headers["x-client-id"].toString(),
-            sessionId: req.headers["x-session-id"].toString(),
             userAgent: req.headers["user-agent"]?.toString() ?? "null",
             url: req.url,
+            date: new Date(),
         };
 
         req["clientData"] = reqData;
