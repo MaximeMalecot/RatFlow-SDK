@@ -16,11 +16,11 @@ import { AnalyticsContextProvider } from  "ratflow-sdk-react";
 
 const authConfig  = {
 	appId: "YOUR_APP_ID",
-	appSecret: "YOUR_APP_SECRET"
 };
 
 const sdkOptions  = {
 	trackMouse: true,
+	useBeacon: false
 };
 
 ReactDOM.createRoot(document.getElementById("root") as  HTMLElement).render(
@@ -36,17 +36,16 @@ You must provide a prop "*auth*" with the following values, an optional "*option
     
     auth: {  
     	appId: string;  
-    	appSecret: string;  
     };
 	
 	options: {
-	    debug?:  boolean;
+		debug?:  boolean;
 		trackMouse?:  boolean;
 		useBeacon?:  boolean;
 	}
 
 # Tracker hooks
-The ratflow-react-sdk library provide a set of hooks to allow you to track any meaningful event happening on your app.
+The ratflow-react-sdk library provides a set of hooks to allow you to track any meaningful event happening on your app.
 
 ## Usage
 Each hook follows the same pattern with a ref that you just have to assign to your tracked element, and provide your tag identifier:
@@ -116,6 +115,49 @@ UseGenericTracker props:
     useDebounce?:  boolean;
 
 # Best practices 
+
+## Setup
+Create a ratflow.js/ts file at the root of your project.
+Inside, put the following code:
+
+	export const ratflowConfig = {
+		appId: <YOUR_APP_ID>
+	}
+
+	export const tags = {
+		mainAppScroll: <YOUR_TAG_ID>,
+		scrollLong: <YOUR_TAG_ID>,
+		btn: <YOUR_TAG_ID>,
+		form: <YOUR_TAG_ID>
+	}
+
+	export const sdkOptions = {
+		trackMouse: true, //as you wish
+		useBeacon: false //as you wish
+	};
+
+	export const sdkConfig = {
+		auth: ratflowConfig,
+		options: sdkOptions
+	}
+
+You can get the tags variable in your Ratflow dashboard when managing your app tags.
+
+Inside your main.tsx or main.ts file:
+
+	import { sdkConfig } from "./ratflow"; 
+
+	ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+		<React.StrictMode>
+			<AnalyticsContextProvider {...sdkConfig}>
+				<BrowserRouter>
+					<App />
+				</BrowserRouter>
+			</AnalyticsContextProvider>
+		</React.StrictMode>
+	);
+
+
 
 ## Routing
 If you are using a routing library such as react-router-dom, you can increase the precision of the sdk by providing to the context what is the current page using a function returned by the context.

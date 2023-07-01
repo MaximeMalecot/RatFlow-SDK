@@ -8,3 +8,13 @@ export const tags = {
     btn: "648c8f7cf3a8cbb73532a174",
     form: "648c8f9bf3a8cbb73532a185"
 }
+
+export const sdkOptions = {
+    trackMouse: true,
+    useBeacon: false
+};
+
+export const sdkConfig = {
+    auth: ratflowConfig,
+    options: sdkOptions
+}
