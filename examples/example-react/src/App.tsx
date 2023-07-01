@@ -13,6 +13,7 @@ import Home from "./pages/home";
 import { useEffect } from "react";
 import { useAnalytics } from "ratflow-sdk-react";
 import LongPage from "./pages/long-page";
+import { tags } from "./ratflow";
 
 function AppLayout() {
     return (
@@ -27,7 +28,7 @@ function AppLayout() {
     );
 }
 function App() {
-    const { ref } = useScrollTracker({ tag: "main-app" });
+    const { ref } = useScrollTracker({ tag: tags.mainAppScroll });
     const { pathname } = useLocation();
     const { setCurrentPage } = useAnalytics();
 

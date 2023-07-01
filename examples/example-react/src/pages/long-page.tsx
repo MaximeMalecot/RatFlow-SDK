@@ -1,7 +1,8 @@
+import { tags } from "@/ratflow";
 import { useScrollTracker } from "ratflow-sdk-react";
 
 export default function LongPage() {
-    const { ref } = useScrollTracker({ tag: "long-page-tracker" });
+    const { ref } = useScrollTracker({ tag: tags.scrollLong});
 
     return (
         <div ref={ref} style={{ height: "200vh", overflowY: "scroll", width: "100%" }}>
