@@ -1,5 +1,5 @@
 {
-    "name": "ratflow-sdk-react",
+    "name": "ratflow-sdk-react-test",
     "private": false,
     "version": "0.0.0",
     "type": "module",
@@ -15,20 +15,20 @@
         "vite-plugin-dts": "^2.3.0"
     },
     "devDependencies": {
+        "@fingerprintjs/fingerprintjs": "^3.4.1",
+        "@types/crypto-js": "^4.1.1",
         "@types/react": "^18.0.28",
         "@types/react-dom": "^18.0.11",
         "@typescript-eslint/eslint-plugin": "^5.57.1",
         "@typescript-eslint/parser": "^5.57.1",
         "@vitejs/plugin-react": "^4.0.0",
+        "crypto-js": "^4.1.1",
         "eslint": "^8.38.0",
         "eslint-plugin-react-hooks": "^4.6.0",
         "eslint-plugin-react-refresh": "^0.3.4",
-        "typescript": "^5.0.2",
-        "vite": "^4.3.2",
         "ratflow-sdk-lib-front": "*",
-        "@fingerprintjs/fingerprintjs": "^3.4.1",
-        "crypto-js": "^4.1.1",
-        "@types/crypto-js": "^4.1.1"
+        "typescript": "^5.0.2",
+        "vite": "^4.3.2"
     },
     "files": [
         "dist"
@@ -37,9 +37,7 @@
     "module": "./dist/ratflow-sdk-react.es.js",
     "types": "./dist/index.d.ts",
     "exports": {
-        ".": {
-            "import": "./dist/ratflow-sdk-react.es.js",
-            "require": "./dist/ratflow-sdk-react.umd.js"
-        }
-    }
+        ".": "./dist/ratflow-sdk-react.es.js"
+    },
+    "gitHead": "9a24ba949c58940f2e4a120a165a5f5fb03a85d7"
 }
