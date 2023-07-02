@@ -1,5 +1,5 @@
 import "@/App.css";
-import { useScrollTracker } from "ratflow-sdk-react";
+import { useScrollTracker } from "ratflow-sdk-react-rollup";
 import {
     Link,
     Outlet,
@@ -11,7 +11,7 @@ import {
 import NotFound from "./pages/not-found";
 import Home from "./pages/home";
 import { useEffect } from "react";
-import { useAnalytics } from "ratflow-sdk-react";
+import { useAnalytics } from "ratflow-sdk-react-rollup";
 import LongPage from "./pages/long-page";
 import { tags } from "./ratflow";
 

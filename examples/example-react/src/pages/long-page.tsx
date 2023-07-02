@@ -1,5 +1,5 @@
 import { tags } from "@/ratflow";
-import { useScrollTracker } from "ratflow-sdk-react";
+import { useScrollTracker } from "ratflow-sdk-react-rollup";
 
 export default function LongPage() {
     const { ref } = useScrollTracker({ tag: tags.scrollLong});

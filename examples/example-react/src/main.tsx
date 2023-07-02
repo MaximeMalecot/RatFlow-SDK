@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
-import { AnalyticsContextProvider } from "ratflow-sdk-react";
+import { AnalyticsContextProvider } from "ratflow-sdk-react-rollup";
 import { BrowserRouter } from "react-router-dom";
 import { sdkConfig } from "./ratflow"; 
 

@@ -1,6 +1,6 @@
 {
     "name": "ratflow-sdk-react-test",
-    "private": false,
+    "private": true,
     "version": "0.0.0",
     "type": "module",
     "scripts": {
@@ -37,7 +37,9 @@
     "module": "./dist/ratflow-sdk-react.es.js",
     "types": "./dist/index.d.ts",
     "exports": {
-        ".": "./dist/ratflow-sdk-react.es.js"
-    },
-    "gitHead": "9a24ba949c58940f2e4a120a165a5f5fb03a85d7"
+        ".": {
+            "import": "./dist/ratflow-sdk-react.es.js",
+            "require": "./dist/ratflow-sdk-react.umd.js"
+        }
+    }
 }
