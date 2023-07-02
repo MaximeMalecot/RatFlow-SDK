@@ -2,7 +2,7 @@
     "name": "ratflow-sdk-nest-ms",
     "version": "0.0.0",
     "description": "",
-    "private": true,
+    "private": false,
     "type": "commonjs",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
