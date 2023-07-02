@@ -1,7 +1,7 @@
 {
     "name": "ratflow-sdk-react-rollup",
     "private": false,
-    "version": "0.0.1",
+    "version": "0.0.2",
     "type": "module",
     "scripts": {
         "build": "rollup --config rollup.config.ts --configPlugin esbuild && npm run types",
@@ -11,17 +11,17 @@
         "@rollup/plugin-terser": "^0.4.3",
         "react": "^18.2.0",
         "rollup-plugin-delete": "^2.0.0",
-        "rollup-plugin-esbuild": "^5.0.0"
+        "@fingerprintjs/fingerprintjs": "^3.4.1",
+        "rollup-plugin-esbuild": "^5.0.0",
+        "@types/crypto-js": "^4.1.1",
+        "ratflow-sdk-lib-front": "*"
     },
     "types": "dist/index.d.ts",
     "devDependencies": {
-        "@fingerprintjs/fingerprintjs": "^3.4.1",
-        "@types/crypto-js": "^4.1.1",
         "@types/react": "^18.0.28",
         "@typescript-eslint/eslint-plugin": "^5.57.1",
         "@typescript-eslint/parser": "^5.57.1",
         "eslint": "^8.38.0",
-        "ratflow-sdk-lib-front": "*",
         "typescript": "^5.0.2"
     },
     "files": [
