@@ -38,11 +38,13 @@ export const AnalyticsContextProvider: React.FC<
     const { setTimerCallback, resetTimer } = useTimer({ delay: 30000 });
     const clientDataRef = React.useRef<ClientData | null>(null);
     const sessionDataRef = React.useRef<SessionData | null>(null);
+    const [clientData, setClientData] = React.useState<ClientData | null>(null);
 
     const fetchEvent = async (event: FetchEventParams) => {
         try{
+            console.log(auth)
             if (!auth || !auth.appId) throw new Error("Invalid auth provided");
-
+            console.log("CALLED")
             let sessionId;
             const sessionData = sessionDataRef.current;
             const clientData = clientDataRef.current;
@@ -114,6 +116,7 @@ export const AnalyticsContextProvider: React.FC<
         const data = await getClientData();
         // setClientData(data);
         clientDataRef.current = data;
+        setClientData(data);
 
         const localSessionData = generateSessionData(data.clientId)
         // setSessionData(localSessionData);
@@ -130,6 +133,7 @@ export const AnalyticsContextProvider: React.FC<
         if (!options?.trackMouse) return;
 
         const listenerCb = debounce((e: MouseEvent) => {
+            console.log("t")
             const { pageX, pageY } = e;
             fetchEvent({
                 type: MOUSE_MOVED,
@@ -140,7 +144,7 @@ export const AnalyticsContextProvider: React.FC<
         document.addEventListener("mousemove", listenerCb);
 
         return () => document.removeEventListener("mousemove", listenerCb);
-    }, [options, clientDataRef]);
+    }, [options, clientData]);
 
     useEffect(() => {
         if(!clientDataRef.current) return;

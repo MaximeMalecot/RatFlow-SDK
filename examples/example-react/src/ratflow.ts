@@ -1,5 +1,5 @@
 export const ratflowConfig = {
-    appId: import.meta.env.VITE_RATFLOW_APP_ID
+    appId: import.meta.env.VITE_RATFLOW_APP_ID??"Your app id"
 }
 
 export const tags = {
