@@ -35,7 +35,7 @@ export const AnalyticsContextProvider: React.FC<
     AnalyticsContextProviderProps
 > = ({ children, auth, options }: AnalyticsContextProviderProps) => {
     const [currentPage, setCurrentPage] = React.useState<string | null>(null);
-    const { setTimerCallback, resetTimer } = useTimer({ delay: 10000 });
+    const { setTimerCallback, resetTimer } = useTimer({ delay: 30000 });
     const clientDataRef = React.useRef<ClientData | null>(null);
     const sessionDataRef = React.useRef<SessionData | null>(null);
 

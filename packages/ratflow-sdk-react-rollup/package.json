@@ -1,7 +1,7 @@
 {
     "name": "ratflow-sdk-react-rollup",
     "private": false,
-    "version": "0.0.2",
+    "version": "0.0.4",
     "type": "module",
     "scripts": {
         "build": "rollup --config rollup.config.ts --configPlugin esbuild && npm run types",

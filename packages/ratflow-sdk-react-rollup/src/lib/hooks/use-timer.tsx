@@ -4,7 +4,7 @@ interface UseTimerProps {
     delay: number;
 }
 
-export default function useTimer({delay}: UseTimerProps = {delay: 10000}){
+export default function useTimer({delay}: UseTimerProps = {delay: 30000}){
     const [timer, setTimer] = useState<number | null>(null);
     // const [cb, setCb] = useState<(Function) | null>(null);
     const cbRef = useRef<Function | null>(null);
